@@ -1,6 +1,6 @@
 ## Andy Wilson
 ## Exploratory Data Analysis
-## Assignment 1 Part 1: Active Power Histogram
+## Assignment 1 Part 3: Sub-metering
 
 
 ## Load the data for Exercise 1 from a flat file.
@@ -66,7 +66,7 @@ loadDataForExercise <- function() {
     extractDateSubset(dataWithTimestamps, "2007-02-01 00:00:00 MST", "2007-02-02 23:59:59 MST")
 }
 
-## Create the histogram plot required for Assignment 1 part 3.
+## Create the line plot required for Assignment 1 part 3.
 ##
 ## Args:
 ##   None.
@@ -75,7 +75,7 @@ loadDataForExercise <- function() {
 ##   Nothing.
 ##
 ## Side Effects:
-##   The plot will be written to the file 'plot2.png' in the current directory.
+##   The plot will be written to the file 'plot3.png' in the current directory.
 
 plot3 <-  function() {
     powerData <- loadDataForExercise()
@@ -83,13 +83,17 @@ plot3 <-  function() {
 
     yRange <- with(powerData, range(c(Sub_metering_1, Sub_metering_2, Sub_metering_3)))
 
+    # Decrease the font size to better approximate the figure
     par("cex", 0.5)
+
+    # Open up the plot with the proper range and labels
     with(powerData, plot(Timestamp, Sub_metering_1,
                          type="n",
                          ylim=yRange,
                          ylab="Energy sub metering",
                          xlab=""))
 
+    # Draw all three line charts on top of one another
     with(powerData, lines(Timestamp, Sub_metering_1, col="black"))
     with(powerData, lines(Timestamp, Sub_metering_2, col="red"))
     with(powerData, lines(Timestamp, Sub_metering_3, col="blue"))

@@ -9,6 +9,9 @@
 ## script should have no arguments.  It will certainly make it easier for
 ## me as I'm exploring than if I had to remember the filename every time.
 ##
+## NOTE: This assumes that you have the file
+## 'household_power_consumption.txt' in the current directory.
+##
 ## Args:
 ##   None.  File path is hardcoded in the name of reproducibility.
 ##
@@ -38,7 +41,7 @@ addTimestampColumn <- function(df, outputColumn="Timestamp") {
     df
 }
 
-## Extract all rows for a date range from a frame containing a column named Date.
+## Extract all rows for a timestamp range from a frame containing a column named Date.
 ##
 ## Args:
 ##    df (data.frame): Frame to subset
@@ -46,7 +49,7 @@ addTimestampColumn <- function(df, outputColumn="Timestamp") {
 ##    endTime (Date): End date
 ##
 ## Returns:
-##    data.frame containing rows whose Date is between startTime and endTime inclusive
+##    data.frame containing rows whose Timestamp is between startTime and endTime inclusive
 
 extractDateSubset <- function(df, startTime, endTime) {
     subset(df, Timestamp >= as.POSIXct(startTime) & Timestamp <= as.POSIXct(endTime))
@@ -66,6 +69,19 @@ loadDataForExercise <- function() {
     extractDateSubset(dataWithTimestamps, "2007-02-01 00:00:00 MST", "2007-02-02 23:59:59 MST")
 }
 
+## Render subplot #1 for plot 4
+##
+## Plot global active power against time (line chart).
+##
+## Args:
+##   df (data.frame): Data to render
+##
+## Returns:
+##   Nothing
+##
+## Side Effects:
+##   Figure 4.1 will be rendered to the current device.
+
 drawSubplot1 <- function(df) {
     with(df,
          {
@@ -75,6 +91,19 @@ drawSubplot1 <- function(df) {
              lines(Timestamp, Global_active_power)
      })
 }
+
+## Render subplot #2 for plot 4
+##
+## Plot voltage against time (line chart).
+##
+## Args:
+##   df (data.frame): Data to render
+##
+## Returns:
+##   Nothing
+##
+## Side Effects:
+##   Figure 4.2 will be rendered to the current device.
 
 drawSubplot2 <- function(df) {
     with(df,
@@ -86,7 +115,25 @@ drawSubplot2 <- function(df) {
          })
 }
 
+
+## Render subplot #3 for plot 4
+##
+## Plot the three sub-metered quantities against time (superimposed line charts).
+##
+## Args:
+##   df (data.frame): Data to render
+##
+## Returns:
+##   Nothing
+##
+## Side Effects:
+##   Figure 4.3 will be rendered to the current device.
+
 drawSubplot3 <- function(df) {
+
+    # Compute the common data range so that we can be
+    # sure that all three series will fit within the
+    # plot
     yRange <- with(df, range(c(Sub_metering_1, Sub_metering_2, Sub_metering_3)))
 
     with(df,
@@ -99,11 +146,31 @@ drawSubplot3 <- function(df) {
              lines(Timestamp, Sub_metering_1, col="black")
              lines(Timestamp, Sub_metering_2, col="red")
              lines(Timestamp, Sub_metering_3, col="blue")
-             legend.text <- c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3")
+             legend.text <- c("Sub_metering_1",
+                              "Sub_metering_2",
+                              "Sub_metering_3")
              legend.colors <- c("black", "red", "blue")
-             legend("topright", lty=c(1, 1), col=legend.colors, legend=legend.text, bty="n")
+             # The 'bty="n"' instructs R not to draw a
+             # box around the legend
+             legend("topright", lty=c(1, 1),
+                    col=legend.colors,
+                    legend=legend.text, bty="n")
          })
 }
+
+
+## Render subplot #4 for plot 4
+##
+## Plot the global reactive power against time (line chart).
+##
+## Args:
+##   df (data.frame): Data to render
+##
+## Returns:
+##   Nothing
+##
+## Side Effects:
+##   Figure 4.4 will be rendered to the current device.
 
 drawSubplot4 <- function(df) {
     with(df,
@@ -116,7 +183,7 @@ drawSubplot4 <- function(df) {
          })
 }
 
-## Create the histogram plot required for Assignment 1 part 4.
+## Create the 4-up plot required for Assignment 1 part 4.
 ##
 ## Args:
 ##   None.

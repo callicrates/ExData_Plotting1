@@ -1,6 +1,6 @@
 ## Andy Wilson
 ## Exploratory Data Analysis
-## Assignment 1 Part 1: Active Power Histogram
+## Assignment 1 Part 2: Active Power Line Chart
 
 
 ## Load the data for Exercise 1 from a flat file.
@@ -66,7 +66,7 @@ loadDataForExercise <- function() {
     extractDateSubset(dataWithTimestamps, "2007-02-01 00:00:00 MST", "2007-02-02 23:59:59 MST")
 }
 
-## Create the histogram plot required for Assignment 1 part 2.
+## Create the line chart required for Assignment 1 part 2.
 ##
 ## Args:
 ##   None.
@@ -81,10 +81,12 @@ plot2 <-  function() {
     powerData <- loadDataForExercise()
     png("plot2.png", width=480, height=480)
 
+    # Set up the plot with appropriate dimensions but don't draw data
     plot(powerData$Timestamp, powerData$Global_active_power,
          xlab="",
          ylab="Global Active Power (kilowatts)",
          type="n")
+    # This is where we actually render the data
     lines(powerData$Timestamp, powerData$Global_active_power)
 
     dev.off()
